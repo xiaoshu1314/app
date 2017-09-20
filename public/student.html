@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>学生管理</title>
+	<link rel="stylesheet" href="stylesheets/style.css">
+	<script>
+		window.onload=function(){
+           var form =document.forms[0];
+           form.onsubmit=function(event){
+          // 	alert('1')
+           var action =form.action;
+           var request =new XMLHttpRequest();
+           request.open('GET',action,true);
+           request.send();
+
+           request.onreadystatechange =function(){
+           //	alert(request.readyState)
+             if(request.readyState == 4) {
+             	if(request.status ==200) {
+             		// console.log(request.responseText)
+             		var data = JSON.parse(request.responseText)
+             		updateData(data);
+             	}
+
+             }
+           }
+           event.preventDefault();   
+           }
+		}
+    function updateData(data){
+    	data.forEach(function(item){
+    		var tbody = document.getElementsByTagName("tbody")[0];
+        var newTr = document.createElement('tr');
+        var newTd1 = document.createElement('td')
+        newTd1.innerText = item.id;
+        var newTd2 = document.createElement('td')
+        newTd2.innerText = item.name;
+        var newTd3 = document.createElement('td')
+        newTd3.innerText = item.gender;
+        var newTd4 = document.createElement('td')
+        newTd4.innerText = item.birth;
+        newTr.appendChild(newTd1);
+        newTr.appendChild(newTd2);
+        newTr.appendChild(newTd3);
+        newTr.appendChild(newTd4);
+        tbody.appendChild(newTr);
+    	})
+
+    }
+
+	</script>
+</head>
+<body>
+	<h2>学生信息管理</h2><hr>
+	<form action="student/findAll">
+		<input type="search" placeholder="关键字" name="key">
+		<input type="submit" value="搜索">
+	</form>
+	<table>
+		<tbody>
+			<tr>
+				<th>编号</th>
+				<th>姓名</th>
+				<th>性别</th>
+				<th>出生日期</th>
+			</tr>
+		</tbody>
+	</table>
+	<div>
+		<!-- <buttom>jia</buttom>
+		<buttom>gai</buttom>
+		<buttom>shan</buttom> -->
+       <button>添加</button>
+       <button>修改</button>
+       <button>删除</button>
+	</div>
+</body>
+</html>
